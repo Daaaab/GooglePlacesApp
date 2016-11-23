@@ -23,11 +23,17 @@ android {
 
     buildTypes {
 
-        def debugMapsApiKey = '"AIzaSyAflAwbkbNRQ4NdEtCKAfDjv_Q9kHOIWMg"'
+        def debugMapsApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
+        def placesApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
+        def retrofitLogLevelBody = '"BODY"'
+        def backendUrl = '"https://maps.googleapis.com/maps/api/place/"'
 
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'END_POINT_LOG_LEVEL', retrofitLogLevelBody
+            buildConfigField 'String', 'END_POINT_URL', backendUrl
+            buildConfigField 'String', 'PLACES_API_KEY', placesApiKey
             resValue "string", "maps_api_key", debugMapsApiKey
         }
 
@@ -43,6 +49,12 @@ dependencies {
 
     compile 'com.jakewharton.timber:timber:3.0.1'
     compile 'pl.charmas.android:android-reactive-location:0.10@aar'
+
+    //retrofit
+    compile("com.squareup.retrofit2:retrofit:2.0.2")
+    compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'
+    compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
+    compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
 
     //rx
     compile 'io.reactivex:rxjava:1.1.8'

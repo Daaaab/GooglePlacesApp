@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 import jkuc.futureprocessing.fp.googleplacesapp.R;
 import jkuc.futureprocessing.fp.googleplacesapp.dagger.AppComponent;
+import jkuc.futureprocessing.fp.googleplacesapp.data.GooglePlacesDataProvider;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -44,6 +45,9 @@ public class MapFragment extends Fragment {
     protected ReactiveLocationProvider locationProvider;
 
     private Subscription locationSubscription;
+
+
+    GooglePlacesDataProvider provider = new GooglePlacesDataProvider();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,12 +68,12 @@ public class MapFragment extends Fragment {
 
     @SuppressWarnings({"MissingPermission"})
     private void getLastKnownLocation() {
-
         locationSubscription = locationProvider.getLastKnownLocation()
                                                .subscribe(new Action1<Location>() {
                                                    @Override
                                                    public void call(Location location) {
                                                        zoomOnMyLocation(location);
+                                                       provider.getNearbyBars(location);
                                                    }
                                                }, new Action1<Throwable>() {
                                                    @Override
@@ -108,7 +112,10 @@ public class MapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        locationSubscription.unsubscribe();
+//        if(locationSubscription != null){
+//            locationSubscription.unsubscribe();
+//        }
+
     }
 
     @SuppressWarnings({"MissingPermission"})
