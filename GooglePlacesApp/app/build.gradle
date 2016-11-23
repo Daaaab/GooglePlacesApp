@@ -23,8 +23,8 @@ android {
 
     buildTypes {
 
-        def debugMapsApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
-        def placesApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
+        def debugMapsApiKey = '"AIzaSyAia16bZX2aw9zs-C0ma-KbjucmqI5hSqI"'
+        def placesApiKey = '"AIzaSyAia16bZX2aw9zs-C0ma-KbjucmqI5hSqI"'
         def retrofitLogLevelBody = '"BODY"'
         def backendUrl = '"https://maps.googleapis.com/maps/api/place/"'
 

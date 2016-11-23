@@ -8,6 +8,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import jkuc.futureprocessing.fp.googleplacesapp.BuildConfig;
+import jkuc.futureprocessing.fp.googleplacesapp.data.GooglePlacesDataProvider;
+import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.IPlacesDownloader;
+import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.MockDownloader;
 import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.PlacesService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -19,9 +22,15 @@ import timber.log.Timber;
 @Module
 public class RetrofitModule {
 
+    @Singleton
     @Provides
-    public PlacesService providesPlacesService(Retrofit retrofit){
-        return retrofit.create(PlacesService.class);
+    public GooglePlacesDataProvider providerGooglePlacesDataProvider(IPlacesDownloader service){
+        return new GooglePlacesDataProvider(service);
+    }
+
+    @Provides
+    public IPlacesDownloader providesPlacesService(Retrofit retrofit){
+        return new MockDownloader();
     }
 
     @Singleton
@@ -35,7 +44,7 @@ public class RetrofitModule {
             }
         });
 
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.valueOf(BuildConfig.END_POINT_LOG_LEVEL));
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.addNetworkInterceptor(loggingInterceptor);

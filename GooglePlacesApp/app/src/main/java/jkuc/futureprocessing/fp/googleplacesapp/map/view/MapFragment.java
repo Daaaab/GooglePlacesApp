@@ -44,10 +44,10 @@ public class MapFragment extends Fragment {
     @Inject
     protected ReactiveLocationProvider locationProvider;
 
+    @Inject
+    protected GooglePlacesDataProvider provider;
+
     private Subscription locationSubscription;
-
-
-    GooglePlacesDataProvider provider = new GooglePlacesDataProvider();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,9 +112,9 @@ public class MapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-//        if(locationSubscription != null){
-//            locationSubscription.unsubscribe();
-//        }
+                if(locationSubscription != null){
+                    locationSubscription.unsubscribe();
+                }
 
     }
 
