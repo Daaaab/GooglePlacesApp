@@ -168,7 +168,7 @@ public class MapFragment extends Fragment {
     private Bitmap getImage(String photoRef) {
         Bitmap bmp = null;
         try {
-            URL url = new URL(BuildConfig.PHOTO_URL + photoRef);
+            URL url = new URL(BuildConfig.PHOTO_URL + photoRef +"&key=" + BuildConfig.PLACES_API_KEY);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);

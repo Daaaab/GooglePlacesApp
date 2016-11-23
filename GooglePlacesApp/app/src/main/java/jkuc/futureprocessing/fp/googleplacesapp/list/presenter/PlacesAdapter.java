@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+import jkuc.futureprocessing.fp.googleplacesapp.BuildConfig;
 import jkuc.futureprocessing.fp.googleplacesapp.R;
 import jkuc.futureprocessing.fp.googleplacesapp.list.data.Place;
 
@@ -60,7 +61,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         }
 
         public void bindData(Context context, Place place) {
-            String tmp = "https://maps.googleapis.com/maps/api/place/photo?photoreference=" + place.imageURL + "&key=AIzaSyBRXxWsQ8dELYdQwUoPmBffMafGuK4sWsw";//TODO get from cfg
+            String tmp = BuildConfig.PHOTO_URL + place.imageURL + "&key=" + BuildConfig.PLACES_API_KEY;
             Glide.with(context)
                  .load(tmp)
                  .diskCacheStrategy(DiskCacheStrategy.RESULT)

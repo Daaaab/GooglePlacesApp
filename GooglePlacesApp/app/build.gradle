@@ -23,8 +23,8 @@ android {
 
     buildTypes {
 
-        def debugMapsApiKey = '"AIzaSyAia16bZX2aw9zs-C0ma-KbjucmqI5hSqI"'
-        def placesApiKey = '"AIzaSyAia16bZX2aw9zs-C0ma-KbjucmqI5hSqI"'
+        def debugMapsApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
+        def placesApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
         def retrofitLogLevelBody = '"BODY"'
         def backendUrl = '"https://maps.googleapis.com/maps/api/place/"'
         def photoUrl = '"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="'
