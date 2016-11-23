@@ -47,7 +47,7 @@ public class RetrofitModule {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        okHttpClientBuilder.addNetworkInterceptor(loggingInterceptor);
+        okHttpClientBuilder.addInterceptor(loggingInterceptor);
 
         Moshi moshi = new Moshi.Builder().build();
 
