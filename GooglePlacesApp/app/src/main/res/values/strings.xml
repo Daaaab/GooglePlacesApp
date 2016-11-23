@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GooglePlacesApp</string>
+    <string name="list_view_title">List</string>
 </resources>

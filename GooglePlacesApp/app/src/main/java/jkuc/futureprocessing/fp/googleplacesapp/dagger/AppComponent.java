@@ -8,6 +8,7 @@ import dagger.Component;
 import jkuc.futureprocessing.fp.googleplacesapp.dagger.modules.MainModule;
 import jkuc.futureprocessing.fp.googleplacesapp.dagger.modules.RetrofitModule;
 import jkuc.futureprocessing.fp.googleplacesapp.data.GooglePlacesDataProvider;
+import jkuc.futureprocessing.fp.googleplacesapp.list.view.ListFragment;
 import jkuc.futureprocessing.fp.googleplacesapp.map.view.MapFragment;
 
 @Singleton
@@ -16,7 +17,7 @@ public abstract class AppComponent {
 
     public static AppComponent instance;
 
-    public static void initComponent(Context context){
+    public static void initComponent(Context context) {
         instance = DaggerAppComponent
                 .builder()
                 .mainModule(new MainModule(context))
@@ -24,6 +25,8 @@ public abstract class AppComponent {
     }
 
     public abstract void inject(MapFragment mapFragment);
+
+    public abstract void inject(ListFragment listFragment);
 
     public abstract void inject(GooglePlacesDataProvider googlePlacesDataProvider);
 }
