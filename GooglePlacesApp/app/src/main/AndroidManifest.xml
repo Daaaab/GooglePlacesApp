@@ -7,7 +7,7 @@
         android:protectionLevel="signature"/>
 
     <uses-permission android:name="jkuc.futureprocessing.fp.googleplacesapp.permission.MAPS_RECEIVE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:name=".PlacesApp"
         android:allowBackup="true"
