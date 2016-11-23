@@ -10,8 +10,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,13 +29,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.inject.Inject;
@@ -48,6 +43,7 @@ import jkuc.futureprocessing.fp.googleplacesapp.dagger.AppComponent;
 import jkuc.futureprocessing.fp.googleplacesapp.data.GooglePlacesDataProvider;
 import jkuc.futureprocessing.fp.googleplacesapp.data.entity.PlaceDescription;
 import jkuc.futureprocessing.fp.googleplacesapp.data.entity.Result;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.BitmapDownloader;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.Subscriber;
@@ -72,6 +68,7 @@ public class MapFragment extends Fragment {
     protected GooglePlacesDataProvider provider;
 
     private Subscription locationSubscription;
+    private BitmapDownloader bitmapDownloader = new BitmapDownloader();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,18 +126,12 @@ public class MapFragment extends Fragment {
         });
     }
 
+    //download image and display it as marker icon
     private void showNewMarker(final LatLng position, final String photoRef) {
         if(photoRef != null) {
             // Get async bar image from web
             // when loaded show on map
-            Observable.create(new Observable.OnSubscribe<Bitmap>() {
-                                  @Override
-                                  public void call(Subscriber<? super Bitmap> subscriber) {
-                                      subscriber.onNext(getImage(photoRef));
-                                      subscriber.onCompleted();
-                                  }
-                              }
-            ).subscribeOn(Schedulers.newThread())
+            bitmapDownloader.getBitmap(photoRef).subscribeOn(Schedulers.newThread())
                       .observeOn(AndroidSchedulers.mainThread())
                       .subscribe(new Subscriber<Bitmap>() {
                           @Override
@@ -165,46 +156,6 @@ public class MapFragment extends Fragment {
         }
     }
 
-    private Bitmap getImage(String photoRef) {
-        Bitmap bmp = null;
-        try {
-            URL url = new URL(BuildConfig.PHOTO_URL + photoRef +"&key=" + BuildConfig.PLACES_API_KEY);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            //return rounded bitmap
-            bmp = roundBitmap(BitmapFactory.decodeStream(is));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        return bmp;
-    }
-
-    private Bitmap roundBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                                            bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(),
-                                   bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-
-        float radius = bitmap.getWidth() > bitmap.getHeight() ? bitmap.getHeight() / 2 : bitmap.getWidth() / 2;
-
-        canvas.drawCircle(bitmap.getWidth() / 2,
-                          bitmap.getHeight() / 2, radius, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
-    }
-
     @SuppressWarnings({"MissingPermission"})
     private void setMyLocationOnMap() {
         googleMap.setMyLocationEnabled(true);
@@ -220,7 +171,7 @@ public class MapFragment extends Fragment {
                     getLastKnownLocation();
                     setMyLocationOnMap();
                 } else {
-                    //TODO
+                    //TODO what if permision is denied
                 }
             }
         }
@@ -243,6 +194,7 @@ public class MapFragment extends Fragment {
         googleMap.animateCamera(zoom);
     }
 
+    // Initialize maps and load data afterwards
     private void initMap(@Nullable Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -261,9 +213,7 @@ public class MapFragment extends Fragment {
                 if(ContextCompat.checkSelfPermission(getActivity(),
                                                      Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(getActivity(),
-                                                      new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                                      LOCATION_REQUEST_CODE);
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                 } else {
                     getLastKnownLocation();
                     setMyLocationOnMap();

@@ -1,4 +1,4 @@
-package jkuc.futureprocessing.fp.googleplacesapp.data.retrofit;
+package jkuc.futureprocessing.fp.googleplacesapp.data.net;
 
 import jkuc.futureprocessing.fp.googleplacesapp.data.entity.Result;
 import rx.Observable;

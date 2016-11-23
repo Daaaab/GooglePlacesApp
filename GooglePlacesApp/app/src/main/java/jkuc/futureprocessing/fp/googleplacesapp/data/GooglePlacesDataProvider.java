@@ -5,7 +5,7 @@ import android.location.Location;
 import jkuc.futureprocessing.fp.googleplacesapp.BuildConfig;
 import jkuc.futureprocessing.fp.googleplacesapp.dagger.AppComponent;
 import jkuc.futureprocessing.fp.googleplacesapp.data.entity.Result;
-import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.IPlacesDownloader;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.IPlacesDownloader;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -32,7 +32,6 @@ public class GooglePlacesDataProvider {
                      .subscribe(new Action1<Result>() {
                          @Override
                          public void call(Result result) {
-                             Timber.d("");
                              lastResult = result;
                              onNextFunction.call(result);
                          }

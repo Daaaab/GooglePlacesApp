@@ -9,9 +9,10 @@ import dagger.Module;
 import dagger.Provides;
 import jkuc.futureprocessing.fp.googleplacesapp.BuildConfig;
 import jkuc.futureprocessing.fp.googleplacesapp.data.GooglePlacesDataProvider;
-import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.IPlacesDownloader;
-import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.MockDownloader;
-import jkuc.futureprocessing.fp.googleplacesapp.data.retrofit.PlacesService;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.IPlacesDownloader;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.MockDownloader;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.PlacesDownloader;
+import jkuc.futureprocessing.fp.googleplacesapp.data.net.PlacesService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -30,7 +31,9 @@ public class RetrofitModule {
 
     @Provides
     public IPlacesDownloader providesPlacesService(Retrofit retrofit){
-        return new MockDownloader();
+        // Uncomment for mock purposes
+        //return new MockDownloader();
+        return new PlacesDownloader(retrofit.create(PlacesService.class));
     }
 
     @Singleton

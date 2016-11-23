@@ -14,7 +14,7 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('../key/daab-debug.keystore')
+            storeFile file('<enter path to your keystore>')
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storePassword 'android'
@@ -23,8 +23,8 @@ android {
 
     buildTypes {
 
-        def debugMapsApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
-        def placesApiKey = '"AIzaSyCaq9ttTXRckcXMJLHwuY-QJxyePJZ6IRI"'
+        def debugMapsApiKey = '"<enter your maps API key>"'
+        def placesApiKey = '"<enter your maps API key>"'
         def retrofitLogLevelBody = '"BODY"'
         def backendUrl = '"https://maps.googleapis.com/maps/api/place/"'
         def photoUrl = '"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="'

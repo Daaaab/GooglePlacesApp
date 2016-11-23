@@ -1,4 +1,4 @@
-package jkuc.futureprocessing.fp.googleplacesapp.data.retrofit;
+package jkuc.futureprocessing.fp.googleplacesapp.data.net;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -21,7 +21,7 @@ public class MockDownloader implements IPlacesDownloader {
             return Observable.just(new Result("ERROR", null));
         }
     }
-
+//
     private String getPlacesJSON(){
 
         return "{\n"
